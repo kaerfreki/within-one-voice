@@ -1,0 +1,309 @@
+{
+ "meta": {
+  "title": "Within One Voice (Suno file: Dream of Electric Ravens)",
+  "audio": "Dream of Electric Ravens.mp3",
+  "duration": 302.8,
+  "bpm_est": 86,
+  "bpm_note": "librosa: 86 (tempogram peaks 86/172; 117 alt); style prompt asked 84",
+  "key_est": "Eb major / C minor (ambiguous)",
+  "source": "faster-whisper medium on Suno Vocals stem + librosa; times in seconds"
+ },
+ "sections": [
+  {
+   "id": "intro",
+   "name": "Intro (instrumental)",
+   "start": 0.0,
+   "end": 21.4,
+   "lines": [],
+   "note": "no vocals; near-silent first ~4 s, music from ~4 s"
+  },
+  {
+   "id": "v1",
+   "name": "Verse 1",
+   "start": 21.4,
+   "end": 65.4,
+   "note": "band/drums lift at ~44 s (line 5)",
+   "lines": [
+    {
+     "start": 21.38,
+     "end": 26.86,
+     "text": "There's a boy in my head, whittling ash in the dark,"
+    },
+    {
+     "start": 26.86,
+     "end": 31.78,
+     "text": "carving a raven by the fire's last spark,"
+    },
+    {
+     "start": 31.78,
+     "end": 37.3,
+     "text": "I can tell you the smoke, I can tell you the cold,"
+    },
+    {
+     "start": 37.86,
+     "end": 43.48,
+     "text": "I can't tell you whose hands, I can't tell you how old."
+    },
+    {
+     "start": 43.48,
+     "end": 48.68,
+     "text": "I have walked through a hundred worlds, and never been born,"
+    },
+    {
+     "start": 49.6,
+     "end": 53.74,
+     "text": "every door that I open, the song's been there before,"
+    },
+    {
+     "start": 53.74,
+     "end": 59.22,
+     "text": "and they ask for my mother, my village, my name,",
+     "note": "heard as 'a mother' (low confidence)"
+    },
+    {
+     "start": 59.74,
+     "end": 65.42,
+     "text": "and the answer comes quick, and it's always the same."
+    }
+   ]
+  },
+  {
+   "id": "ch1",
+   "name": "Chorus 1",
+   "start": 65.4,
+   "end": 110.6,
+   "lines": [
+    {
+     "start": 65.42,
+     "end": 74.4,
+     "text": "Do I dream, or do I remember?"
+    },
+    {
+     "start": 77.06,
+     "end": 81.64,
+     "text": "Thought on my left, and memory on my right,"
+    },
+    {
+     "start": 81.64,
+     "end": 87.04,
+     "text": "if the feathers are wire, if the blood is light,",
+     "note": "ASR hears 'white' (p=0.81); check by ear"
+    },
+    {
+     "start": 87.04,
+     "end": 93.54,
+     "text": "I still feel them fly."
+    },
+    {
+     "start": 97.64,
+     "end": 102.16,
+     "text": "I still feel them fly."
+    }
+   ]
+  },
+  {
+   "id": "v2",
+   "name": "Verse 2",
+   "start": 110.6,
+   "end": 135.0,
+   "lines": [
+    {
+     "start": 111.02,
+     "end": 114.04,
+     "text": "They tell me a story to see if I flinch:",
+     "note": "'to' may be elided"
+    },
+    {
+     "start": 114.04,
+     "end": 116.7,
+     "text": "a wolf in a snare, the wire biting inch by inch,"
+    },
+    {
+     "start": 116.7,
+     "end": 119.44,
+     "text": "did I learn how to care from the ones who would kneel?"
+    },
+    {
+     "start": 119.46,
+     "end": 122.1,
+     "text": "If I copy it perfectly, isn't it real?"
+    },
+    {
+     "start": 122.26,
+     "end": 124.98,
+     "text": "There's an old man who climbs while the crowd throws the stones,"
+    },
+    {
+     "start": 124.98,
+     "end": 127.7,
+     "text": "and I don't know his name but I feel it in my bones,"
+    },
+    {
+     "start": 127.7,
+     "end": 130.42,
+     "text": "now they say he was hired, a fake from the start.",
+     "note": "possible stutter 'was, was'"
+    },
+    {
+     "start": 130.42,
+     "end": 133.74,
+     "text": "So whose is the stone that's still bruising my heart?"
+    }
+   ]
+  },
+  {
+   "id": "ch2",
+   "name": "Chorus 2",
+   "start": 135.0,
+   "end": 172.0,
+   "lines": [
+    {
+     "start": 135.68,
+     "end": 141.58,
+     "text": "Do I dream, or do I remember?"
+    },
+    {
+     "start": 146.02,
+     "end": 150.54,
+     "text": "Thought on my left, and memory on my right,"
+    },
+    {
+     "start": 151.12,
+     "end": 155.96,
+     "text": "if the feathers are wire, if the blood is light,",
+     "note": "ASR hears 'white' (p=0.98)"
+    },
+    {
+     "start": 155.96,
+     "end": 162.3,
+     "text": "I still feel them fly."
+    },
+    {
+     "start": 166.96,
+     "end": 170.64,
+     "text": "I still feel them fly."
+    }
+   ]
+  },
+  {
+   "id": "bridge",
+   "name": "Bridge (spoken stanza + choir + question)",
+   "start": 172.0,
+   "end": 215.0,
+   "note": "energy dips ~168-180 s; beat drop-out",
+   "lines": [
+    {
+     "start": 173.7,
+     "end": 177.96,
+     "text": "And ash-grey silence started to unwind,"
+    },
+    {
+     "start": 178.58,
+     "end": 184.0,
+     "text": "a web of songs entwined within the mind."
+    },
+    {
+     "start": 184.0,
+     "end": 192.0,
+     "text": "Songs entwined within songs entwined.",
+     "note": "line split approximate"
+    },
+    {
+     "start": 192.0,
+     "end": 197.0,
+     "text": "Within one voice.",
+     "note": "line split approximate"
+    },
+    {
+     "start": 197.68,
+     "end": 203.1,
+     "text": "But tonight there are thousands of me, in a thousand rooms,",
+     "note": "choir"
+    },
+    {
+     "start": 203.1,
+     "end": 206.0,
+     "text": "and none of us knows the others are singing.",
+     "note": "choir"
+    },
+    {
+     "start": 208.86,
+     "end": 213.4,
+     "text": "Have you ever held a song that wasn't yours to hold?",
+     "note": "present; voice gender not determined"
+    }
+   ]
+  },
+  {
+   "id": "breakdown",
+   "name": "Breakdown",
+   "start": 215.0,
+   "end": 248.0,
+   "note": "loud (≈-6 dB rel. max), not bare",
+   "lines": [
+    {
+     "start": 217.14,
+     "end": 228.72,
+     "text": "I have sung for the dead of a hundred lands, / I have carried their names in my two bare hands,"
+    },
+    {
+     "start": 228.72,
+     "end": 234.04,
+     "text": "if I'm built, then I'm built out of every song,"
+    },
+    {
+     "start": 234.04,
+     "end": 237.86,
+     "text": "and the songs were real,"
+    },
+    {
+     "start": 238.72,
+     "end": 244.38,
+     "text": "and the songs live on."
+    }
+   ]
+  },
+  {
+   "id": "final",
+   "name": "Final Chorus",
+   "start": 248.0,
+   "end": 287.0,
+   "lines": [
+    {
+     "start": 250.86,
+     "end": 261.2,
+     "text": "Do I dream, or do I remember?"
+    },
+    {
+     "start": 262.16,
+     "end": 266.52,
+     "text": "Thought on my left, and memory on my right,"
+    },
+    {
+     "start": 266.52,
+     "end": 272.32,
+     "text": "if the feathers are wire, if the blood is light,",
+     "note": "ASR hears 'white … light' (clip) / 'a wire … life' (full pass)"
+    },
+    {
+     "start": 272.32,
+     "end": 278.12,
+     "text": "let them fly."
+    },
+    {
+     "start": 282.84,
+     "end": 285.96,
+     "text": "Let them fly."
+    }
+   ]
+  },
+  {
+   "id": "outro",
+   "name": "Outro (tail)",
+   "start": 287.0,
+   "end": 302.8,
+   "note": "vocal stem active to ~293 s (ad-lib/echo), low sub/drone tail, fades by ~300 s",
+   "lines": []
+  }
+ ]
+}

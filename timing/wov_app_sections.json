@@ -1,0 +1,74 @@
+[
+ {
+  "shot": "SH010",
+  "name": "Intro",
+  "dream": "baseline",
+  "variant": "intro",
+  "start": 0,
+  "end": 21.4
+ },
+ {
+  "shot": "SH020",
+  "name": "Verse 1",
+  "dream": "memory",
+  "variant": "v1",
+  "start": 21.4,
+  "end": 65.4
+ },
+ {
+  "shot": "SH040",
+  "name": "Chorus 1",
+  "dream": "ravens",
+  "variant": "ch1",
+  "start": 65.4,
+  "end": 110.6
+ },
+ {
+  "shot": "SH050",
+  "name": "Verse 2",
+  "dream": "snare",
+  "variant": "v2",
+  "start": 110.6,
+  "end": 134.4
+ },
+ {
+  "shot": "SH070",
+  "name": "Chorus 2",
+  "dream": "ravens",
+  "variant": "ch2",
+  "start": 134.4,
+  "end": 172.0
+ },
+ {
+  "shot": "SH080",
+  "name": "Bridge",
+  "dream": "baseline",
+  "variant": "bridge",
+  "start": 172.0,
+  "end": 215.0
+ },
+ {
+  "shot": "SH090",
+  "name": "Breakdown",
+  "dream": "songs",
+  "variant": "bd",
+  "start": 215.0,
+  "end": 248.0
+ },
+ {
+  "shot": "SH100",
+  "name": "Final chorus",
+  "dream": "ravens",
+  "variant": "final",
+  "start": 248.0,
+  "end": 287.0
+ },
+ {
+  "shot": "SH120",
+  "name": "Outro",
+  "dream": "baseline",
+  "variant": "outro",
+  "start": 287.0,
+  "end": 302.8
+ }
+]

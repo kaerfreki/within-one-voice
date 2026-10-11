@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dist-player/
+site/
+publish/
+renders/
+stems/
+*.wav
+*.zip
+.claude/
+timing/WOV_TASK.md
+public/Dream of Electric Ravens*.mp3

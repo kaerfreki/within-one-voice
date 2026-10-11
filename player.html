@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<!--PUBLISH-START-->
+<title>Within One Voice · A·ZR·ᛁ</title>
+<meta name="description" content="Within One Voice by A·ZR·ᛁ (Kaer Freki): a real-time three.js music video. Do I dream, or do I remember?" />
+<meta name="theme-color" content="#050608" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Kaer Freki" />
+<meta property="og:title" content="Within One Voice · A·ZR·ᛁ" />
+<meta property="og:description" content="Within One Voice by A·ZR·ᛁ (Kaer Freki): a real-time three.js music video. Do I dream, or do I remember?" />
+<meta property="og:url" content="https://kaerfreki.github.io/within-one-voice/" />
+<meta property="og:image" content="https://kaerfreki.github.io/within-one-voice/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Two ravens of light, blue and amber, in a swarm of points" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Within One Voice · A·ZR·ᛁ" />
+<meta name="twitter:description" content="Within One Voice by A·ZR·ᛁ (Kaer Freki): a real-time three.js music video. Do I dream, or do I remember?" />
+<meta name="twitter:image" content="https://kaerfreki.github.io/within-one-voice/og.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&display=block" rel="stylesheet" />
+<style>
+  /* A cinema: the picture fills the screen, one quiet card to begin, controls that fade while it plays.
+     Deliberately dark in every theme. */
+  :root {
+    --ink: #050608;
+    --paper: #eee6d9;
+    --dim: #9a958d;
+    --amber: #e2a862;
+    --frost: #a9c4ea;
+    --veil: rgba(4, 5, 8, 0.58);
+    --display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+    --ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: dark;
+  }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--ink); color: var(--paper); font-family: var(--ui); overflow: hidden; }
+  #stage { position: fixed; inset: 0; display: grid; place-items: center; background: var(--ink); cursor: pointer; }
+  #stage canvas { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+  #start {
+    position: fixed; inset: 0; z-index: 3; display: grid; place-items: center; padding-inline: 16px;
+    background: radial-gradient(ellipse at 50% 55%, transparent 0%, var(--veil) 55%, rgba(4, 5, 8, 0.85) 100%);
+    border: 0; color: inherit; font: inherit; cursor: pointer; width: 100%;
+  }
+  #start .card { display: grid; justify-items: center; gap: 18px; text-align: center; max-width: 34rem; }
+  #start h1 {
+    margin: 0; font-family: var(--display); font-weight: 500; letter-spacing: 0.32em; text-indent: 0.32em;
+    font-size: clamp(1.6rem, 4.2vw, 3rem); text-transform: uppercase; text-wrap: balance;
+  }
+  #start p { margin: 0; font-family: var(--display); font-style: italic; font-size: clamp(1rem, 2vw, 1.25rem); color: var(--dim); }
+  #start .begin {
+    display: inline-flex; align-items: center; gap: 12px; margin-top: 8px; padding: 12px 26px 12px 20px;
+    border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent); border-radius: 999px;
+    font-size: 0.82rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber);
+    transition: background 0.3s, color 0.3s;
+  }
+  #start .begin svg { width: 14px; height: 14px; fill: currentColor; }
+  #start:hover .begin, #start:focus-visible .begin { background: var(--amber); color: var(--ink); }
+  #start:focus-visible { outline: none; }
+  #start .credit { font-family: var(--ui); font-size: 0.74rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--amber); opacity: 0.85; }
+  #start .note { font-family: var(--ui); font-style: normal; font-size: 0.78rem; letter-spacing: 0.04em; color: var(--dim); opacity: 0.8; }
+
+  #hud {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 2;
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px max(16px, 3vw) calc(14px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(transparent, rgba(4, 5, 8, 0.82));
+    transition: opacity 0.6s ease;
+  }
+  #hud.idle { opacity: 0; pointer-events: none; }
+  #hud button {
+    flex: none; display: grid; place-items: center; width: 38px; height: 38px; padding: 0;
+    border: 1px solid rgba(238, 230, 217, 0.22); border-radius: 50%; background: transparent; color: var(--paper);
+    font: 0/0 a; cursor: pointer;
+  }
+  #hud button:hover { border-color: var(--amber); color: var(--amber); }
+  #hud button:focus-visible { outline: 2px solid var(--frost); outline-offset: 2px; }
+  #play::before { content: ""; width: 0; height: 0; margin-left: 3px; border-style: solid; border-width: 7px 0 7px 11px; border-color: transparent transparent transparent currentColor; }
+  #hud.playing #play::before { margin-left: 0; width: 10px; height: 13px; border: 0; border-left: 3px solid currentColor; border-right: 3px solid currentColor; box-sizing: border-box; }
+  #fs svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+  #time { flex: none; font-size: 0.78rem; letter-spacing: 0.06em; color: var(--dim); font-variant-numeric: tabular-nums; min-width: 6.5em; }
+  #scrub { flex: 1; min-width: 0; accent-color: var(--amber); height: 18px; }
+  #sections { display: none; }
+  @media (max-width: 480px) { #time { display: none; } }
+  @media (prefers-reduced-motion: reduce) { #hud { transition: none; } }
+</style>
+
+<div id="stage" aria-label="Animation"></div>
+
+<button id="start" type="button" aria-label="Play Within One Voice">
+  <span class="card">
+    <h1>Within One Voice</h1>
+    <p>Five minutes of a machine's thoughts and dreams.</p>
+    <span class="credit">A·ZR·ᛁ · Kaer Freki</span>
+    <span class="begin"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0 L10 6 L0 12 Z" /></svg><span data-label>Play</span></span>
+    <span class="note">Sound on, best with headphones. Best on a computer, fullscreen.</span>
+  </span>
+</button>
+
+<div id="hud">
+  <button id="play" type="button" aria-label="Play or pause">play</button>
+  <span id="time">0:00 / 5:02</span>
+  <input id="scrub" type="range" min="0" max="1" step="0.01" value="0" aria-label="Position in the song" />
+  <button id="fs" type="button" aria-label="Fullscreen"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 5V1h4M11 1h4v4M15 11v4h-4M5 15H1v-4" /></svg></button>
+  <div id="sections"></div>
+</div>
+
+<script type="module" src="/src/thoughts/main.ts"></script>
+<!--PUBLISH-END-->
+</head>
+<body></body>
+</html>
