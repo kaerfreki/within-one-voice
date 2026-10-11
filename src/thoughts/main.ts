@@ -441,7 +441,9 @@ function showFrame(n: number) {
   let c: Controls | undefined;
   while (simFrame < n) {
     simFrame++;
-    c = step(simFrame, n - simFrame < FPS * 1.5);
+    // Capture and preview draw every step so the trails are exact. The live player only draws the frame it shows:
+    // drawing each catch-up step made a slow frame slower and left the picture behind the song.
+    c = step(simFrame, n - simFrame < (PLAYER ? 1 : FPS * 1.5));
   }
   const t = n / FPS;
   c ??= controlsAt(t);
@@ -493,20 +495,49 @@ function seek(to: number) {
   t = clamp(to, 0, DURATION);
   audio.currentTime = t;
 }
+function syncUI() {
+  playBtn.textContent = playing ? 'pause' : 'play';
+  playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+  hud.classList.toggle('playing', playing);
+}
 function setPlaying(p: boolean) {
   playing = p;
-  playBtn.textContent = p ? 'pause' : 'play';
-  hud.classList.toggle('playing', p);
-  if (p) {
-    audio.currentTime = t;
-    void audio.play().catch(() => {});
-  } else audio.pause();
+  syncUI();
   last = performance.now();
+  if (p) {
+    // Resume exactly where the picture stopped (only nudge the audio if it drifted)
+    if (Math.abs(audio.currentTime - t) > 0.05) audio.currentTime = t;
+    audio.play().catch(() => {
+      // Autoplay refused (no user gesture yet) or the song failed to load: in the player the audio is the clock,
+      // so stay paused rather than show a pause icon over a frozen picture
+      if (PLAYER) {
+        playing = false;
+        syncUI();
+      }
+    });
+  } else {
+    audio.pause();
+    // Freeze the picture on the exact sample the sound stopped at, so resuming needs no jump
+    if (PLAYER) t = audio.currentTime;
+  }
 }
-playBtn.onclick = () => setPlaying(!playing);
+// The audio element is the source of truth in the player: media keys, headphone buttons or the browser pausing the
+// tab all land here, and the picture and the button follow
+audio.addEventListener('play', () => { if (PLAYER && !playing) { playing = true; last = performance.now(); syncUI(); } });
+audio.addEventListener('pause', () => { if (PLAYER && playing) { playing = false; t = audio.currentTime; syncUI(); } });
+function togglePlay() {
+  const start = document.getElementById('start');
+  if (PLAYER && start && !start.hidden) start.click();
+  else setPlaying(!playing);
+}
+playBtn.onclick = () => togglePlay();
 scrub.oninput = () => seek(Number(scrub.value));
 addEventListener('keydown', (e) => {
-  if (e.code === 'Space') { e.preventDefault(); setPlaying(!playing); }
+  // A focused button or slider already handles Space and the arrows itself; handling them here too toggled twice
+  // (Space on the focused pause button paused and resumed in one press)
+  const tag = (e.target as HTMLElement | null)?.tagName;
+  if ((tag === 'BUTTON' || tag === 'INPUT') && (e.code === 'Space' || e.code === 'Enter' || e.code.startsWith('Arrow'))) return;
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
   else if (e.code === 'ArrowRight') seek(t + (e.shiftKey ? BAR * 4 : BAR));
   else if (e.code === 'ArrowLeft') seek(t - (e.shiftKey ? BAR * 4 : BAR));
   // Preview-only keys (HUD, letterbox, section jumps) stay off in the public player unless ?debug
@@ -534,8 +565,9 @@ if (PLAYER && startEl) {
   let idle = 0;
   const wake = () => {
     hud.classList.remove('idle');
+    document.body.classList.remove('idle');
     clearTimeout(idle);
-    idle = window.setTimeout(() => { if (playing) hud.classList.add('idle'); }, 2500);
+    idle = window.setTimeout(() => { if (playing) { hud.classList.add('idle'); document.body.classList.add('idle'); } }, 2500);
   };
   addEventListener('pointermove', wake);
   addEventListener('pointerdown', wake);
@@ -549,7 +581,18 @@ if (PLAYER && startEl) {
   });
 }
 
+let loopFailed = false;
 function loop(now: number) {
+  // Schedule the next frame first, so one bad frame can never stop the player for good
+  requestAnimationFrame(loop);
+  try {
+    tick(now);
+  } catch (err) {
+    if (!loopFailed) console.error('[player] frame failed', err);
+    loopFailed = true;
+  }
+}
+function tick(now: number) {
   if (playing) {
     if (PLAYER) {
       // The player follows the song exactly, and waits while it buffers
@@ -563,7 +606,6 @@ function loop(now: number) {
   const s = SECTIONS[sectionAt(t)];
   status.textContent = PLAYER ? `${fmtClock(t)} / ${fmtClock(DURATION)}` : `${fmt(t)}  ${s.shot} ${s.name}`;
   secButtons.forEach((b, i) => b.classList.toggle('on', SECTIONS[i] === s));
-  requestAnimationFrame(loop);
 }
 
 // ---- Capture: ?capture&take=th01[&from=s&to=s] renders every frame at 1920x1080 and streams the raw pixels to the

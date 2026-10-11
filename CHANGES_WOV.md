@@ -168,3 +168,24 @@ What uses the envelopes:
 - Line splits at 184.0 and 192.0 s in the bridge are approximate (see the notes in `wov_timeline.json`). Nudge `BRIDGE.stanza` by ear.
 - The choir lines aren't shown as text; the windows carry them. To add the words, put entries in `BRIDGE` and a third word slot in `baseline.ts`.
 - Lyric checks flagged in `wov_timeline.json` (light/white, mother) don't affect visuals.
+
+## Player fixes (11 Oct 2026)
+
+### 1. Text not visible: the player crashed on its first frame
+- **Root cause:** in the lighter preset (256 x 256 particles, used automatically on touch devices and on screens whose short side is under 600 px), `Swarm.waveData` was sized from the particle grid, so it held 256 values. Every frame copies the 512-sample voice waveform into it, so `Float32Array.set` threw `RangeError: offset is out of bounds` on the first frame. The render loop died: no title, lyrics or stanza were drawn, the time stayed at "building shapes..." and the controls did nothing visible.
+- **Fixes:**
+  - `src/thoughts/sim.ts`: the wave buffer is always 512 values.
+  - `src/thoughts/main.ts`: the frame loop schedules the next frame before drawing and catches errors, so one bad frame can't stop the player.
+- **Not the cause:** fonts and paths. Every asset URL is relative and resolves under `/within-one-voice/`.
+
+### 2. Pause seemed broken
+- **Faded controls swallowed the first click.** `#hud.idle` had `pointer-events: none`. A tap on the faded pause button started on the picture, woke the controls and ended on the button, so the browser sent the click to neither. This affected every touch device. The controls now only fade (`player.html`).
+- **Space toggled twice.** With the pause button focused, Space fired the button's own click and the global keyboard handler, so it paused and resumed in one press. The handler now leaves Space, Enter and the arrow keys to a focused button or slider.
+- **The audio element is the source of truth.** Media keys and tab pauses update the button and the picture. If `audio.play()` is refused (autoplay policy), the player stays paused instead of showing a pause icon over a frozen picture.
+- **Resuming is exact.** On pause, the picture's clock is set to the audio's exact position; on resume, the audio is only moved if it drifted more than 50 ms.
+- **Catch-up frames.** The player now simulates every catch-up step but only draws the frame it shows, so a slow frame can't snowball.
+
+**Verified:** `npm run build:site`, then serving `site/` under `/within-one-voice/` in the lighter preset.
+- The player starts, and all 44 text lines come up visible at their moment.
+- Clicking the faded pause button pauses, and the clock holds.
+- Space on the focused button resumes once.

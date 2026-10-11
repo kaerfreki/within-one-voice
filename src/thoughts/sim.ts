@@ -1,4 +1,4 @@
-﻿import * as THREE from 'three';
+import * as THREE from 'three';
 import { GPUComputationRenderer, type Variable } from 'three/addons/misc/GPUComputationRenderer.js';
 import { GLSL_NOISE, rng } from '../util';
 import { N, SIZE, type ShapeName } from './shapes';
@@ -149,6 +149,8 @@ void main(){
   gl_FragColor = vec4(p, life);
 }`;
 
+const WAVE_N = 512;
+
 export class Swarm {
   private gpu: GPUComputationRenderer;
   private pos: Variable;
@@ -156,7 +158,9 @@ export class Swarm {
   private init: { pos: THREE.DataTexture; vel: THREE.DataTexture };
   readonly targets: Record<ShapeName, THREE.DataTexture>;
   readonly waveTex: THREE.DataTexture;
-  readonly waveData = new Float32Array(SIZE);
+  // The voice waveform is always 512 samples (VoiceLines writes 512), whatever the particle grid size.
+  // Sizing it from SIZE crashed the first frame in low-quality mode (256): Float32Array.set out of bounds.
+  readonly waveData = new Float32Array(WAVE_N);
 
   constructor(renderer: THREE.WebGLRenderer, shapes: Record<ShapeName, Float32Array>) {
     this.gpu = new GPUComputationRenderer(SIZE, SIZE, renderer);
@@ -185,7 +189,7 @@ export class Swarm {
       tex.needsUpdate = true;
       this.targets[name] = tex;
     }
-    this.waveTex = new THREE.DataTexture(this.waveData, SIZE, 1, THREE.RedFormat, THREE.FloatType);
+    this.waveTex = new THREE.DataTexture(this.waveData, WAVE_N, 1, THREE.RedFormat, THREE.FloatType);
     this.waveTex.magFilter = this.waveTex.minFilter = THREE.LinearFilter;
     this.waveTex.needsUpdate = true;
 
