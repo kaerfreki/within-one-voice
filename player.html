@@ -41,7 +41,9 @@
   html, body { height: 100%; }
   body { margin: 0; background: var(--ink); color: var(--paper); font-family: var(--ui); overflow: hidden; }
   #stage { position: fixed; inset: 0; display: grid; place-items: center; background: var(--ink); cursor: pointer; }
-  #stage canvas { width: 100%; height: 100%; object-fit: contain; display: block; }
+  /* Absolutely positioned so the canvas always fits the window. As a grid item its row grew to the canvas's own
+     height, so in windows wider than 16:9 the picture (and the subtitle band) ran off the bottom of the screen */
+  #stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
 
   #start {
     position: fixed; inset: 0; z-index: 3; display: grid; place-items: center; padding-inline: 16px;

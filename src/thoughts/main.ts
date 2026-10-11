@@ -175,7 +175,8 @@ class Subtitles {
       }
       // Title low in the picture over the raven; stanza above the middle; question centred; lyrics in the lower band
       let h = band * 0.5;
-      let y = -H / 2 + band * 0.5;
+      // In the upper part of the lower band, clear of the player's control bar along the bottom edge
+      let y = -H / 2 + band * 0.62;
       let maxW = W * 0.9;
       if (l.kind === 'title') [h, y] = [band * 0.55, -H * 0.24];
       if (l.kind === 'stanza') [h, y, maxW] = [H * 0.062, H * 0.17, W * 0.72];
